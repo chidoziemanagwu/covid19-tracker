@@ -6,6 +6,7 @@ def fetch_covid_data():
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad status codes
+        print(response)
         return response.json()
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
