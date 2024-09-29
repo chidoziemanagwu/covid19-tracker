@@ -1,4 +1,3 @@
-# app.py
 from flask import Flask, render_template, redirect, url_for, flash
 from sqlalchemy import create_engine
 import pandas as pd
@@ -13,14 +12,11 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_default_secret_key')  # Needed for flashing messages
 
 def get_data():
-        # Retrieve database credentials from environment variables
-    db_user = os.getenv('active')
-    db_host = os.getenv('DB_HOST', 'localhost')
-    db_port = os.getenv('DB_PORT', '5432')
-    db_name = os.getenv('DB_NAME', 'covid_db')
-
+    # Retrieve Render PostgreSQL URL from environment variable
+    db_url = os.getenv('DATABASE_URL', 'postgresql://user:LFz8hgVJji8FIJFy7n1I2gFNJKaJDSCu@dpg-crsltie8ii6s73eeob80-a.oregon-postgres.render.com/dbname_u7r1')
+    
     # Create the database engine
-    engine = create_engine(f'postgresql://{db_user}@{db_host}:{db_port}/{db_name}')
+    engine = create_engine(db_url)
     query = "SELECT * FROM covid_stats"
     try:
         df = pd.read_sql(query, engine)

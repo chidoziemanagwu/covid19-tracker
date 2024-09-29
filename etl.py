@@ -1,4 +1,3 @@
-# etl.py
 import os
 import pandas as pd
 from sqlalchemy import create_engine
@@ -14,7 +13,6 @@ def etl_process():
         df = pd.DataFrame(data)
         # Select relevant columns
         df = df[['country', 'cases', 'todayCases', 'deaths', 'todayDeaths', 'recovered']]
-        # Rename columns for clarity
         df.rename(columns={
             'country': 'Country',
             'cases': 'Total Cases',
@@ -23,15 +21,12 @@ def etl_process():
             'todayDeaths': 'Today Deaths',
             'recovered': 'Recovered'
         }, inplace=True)
-        
-        # Retrieve database credentials from environment variables
-        db_user = os.getenv('active')
-        db_host = os.getenv('DB_HOST', 'localhost')
-        db_port = os.getenv('DB_PORT', '5432')
-        db_name = os.getenv('DB_NAME', 'covid_db')
+
+        # Render PostgreSQL URL
+        db_url = os.getenv('DATABASE_URL', 'postgresql://user:LFz8hgVJji8FIJFy7n1I2gFNJKaJDSCu@dpg-crsltie8ii6s73eeob80-a.oregon-postgres.render.com/dbname_u7r1')
 
         # Create the database engine
-        engine = create_engine(f'postgresql://{db_user}@{db_host}:{db_port}/{db_name}')
+        engine = create_engine(db_url)
         
         # Load data into PostgreSQL
         try:
